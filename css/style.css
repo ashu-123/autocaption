@@ -1,0 +1,18 @@
+body {
+    background-color: #f8f9fa;
+}
+
+.container {
+    max-width: 600px;
+    margin-top: 50px;
+}
+
+#preview {
+    max-width: 100%;
+    margin-top: 20px;
+    display: none;
+}
+
+#captions {
+    margin-top: 20px;
+}
