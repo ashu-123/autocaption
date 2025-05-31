@@ -7,10 +7,17 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class FilterConfig {
+
+    private final RateLimitingFilter rateLimitingFilter;
+
+    public FilterConfig(RateLimitingFilter rateLimitingFilter) {
+        this.rateLimitingFilter = rateLimitingFilter;
+    }
+
     @Bean
     public FilterRegistrationBean<RateLimitingFilter> rateLimitingFilter(){
         FilterRegistrationBean<RateLimitingFilter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setFilter(new RateLimitingFilter());
+        registrationBean.setFilter(rateLimitingFilter);
         registrationBean.addUrlPatterns("/api/*");
         return registrationBean;
     }
