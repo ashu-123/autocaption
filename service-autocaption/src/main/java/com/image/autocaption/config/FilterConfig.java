@@ -15,7 +15,7 @@ public class FilterConfig {
     }
 
     @Bean
-    public FilterRegistrationBean<RateLimitingFilter> rateLimitingFilter(){
+    public FilterRegistrationBean<RateLimitingFilter> registerRateLimitingFilter(){
         FilterRegistrationBean<RateLimitingFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(rateLimitingFilter);
         registrationBean.addUrlPatterns("/api/*");
