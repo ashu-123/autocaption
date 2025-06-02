@@ -8,7 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ## [1.0.0] 2025-05-30
 ### Added
 - Improved REST API : Now able to generate captions for image content types [PNG, GIF, JPG, JPEG]
+- Added MIME type detection to handle various image formats
 - Improved Error Handling in REST API : Backend API now responds with Unsupported Media Type | Media Size too large | Empty file errors
+- Structured Error response
 
 ## [1.0.0] 2025-05-31
 ### Added

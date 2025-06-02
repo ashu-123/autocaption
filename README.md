@@ -89,7 +89,6 @@ curl -X POST http://localhost:8080/api/images/upload \
 
 ## 📉 Limitations
 
-- JPEG images Only: Currently, supports only images of type ".jpeg" | ".jpg"
 
 - Local Model Only: Relies on the gemma3:4b model running via Ollama locally — no remote or cloud support by default. Though, it can be easily tweaked to used any proprietary AI service provider.
 
@@ -112,15 +111,11 @@ curl -X POST http://localhost:8080/api/images/upload \
 
 - ✅ Switch between models (e.g., llava, llava-phi, bakllava) from UI or backend
 
-- ✅ Use mime-type detection instead of assuming "image/jpeg"
-
 - ✅ Add caching for already-processed images
 
 - ✅ Add Docker support to make deployment easier
 
 - ✅ Add OpenAPI (Swagger) documentation for backend
-
-- ✅ Better error handling and model response validation
 
 ---
 
