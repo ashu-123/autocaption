@@ -12,8 +12,6 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.io.IOException;
-
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -24,12 +22,12 @@ class AutoCaptionImageResourceTest {
     private MockMvc mockMvc;
 
     @BeforeEach
-    void setUp() throws IOException, InterruptedException {
+    void setUp() {
         GemmaTestContainer.createGemmaOllamaContainer();
     }
 
     @Test
-    void testUploadImage() throws Exception {
+    void shouldGenerateCaptions() throws Exception {
 
         ClassPathResource imageResource = new ClassPathResource("images/smiling baby.png");
 
