@@ -27,6 +27,7 @@ dependencies {
 	implementation 'org.springframework.ai:spring-ai-starter-model-ollama'
 	implementation 'com.rateLimiter:rate-limiter:1.0-SNAPSHOT'
 	implementation 'com.bucket4j:bucket4j-core:8.10.1'
+	testImplementation 'org.testcontainers:ollama:1.20.4'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
