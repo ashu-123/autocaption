@@ -38,7 +38,7 @@ class AutoCaptionImageResourceTest {
                 imageResource.getInputStream()
         );
 
-        mockMvc.perform(MockMvcRequestBuilders.multipart("/api/images/generateCaption")
+        mockMvc.perform(MockMvcRequestBuilders.multipart("/api/images/captions")
                         .file(imageFile))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))

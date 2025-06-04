@@ -37,7 +37,7 @@ public class AutoCaptionImageResource {
                 "image/gif", IMAGE_GIF);
     }
 
-    @PostMapping(value = "/generateCaption", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/captions", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<List<String>> generateCaption(@RequestParam("image") MultipartFile imageFile) {
         if (imageFile.isEmpty()) {
             throw new EmptyFileException("Uploaded file is empty");

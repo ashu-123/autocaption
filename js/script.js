@@ -26,7 +26,7 @@ form.addEventListener('submit', async event => {
     formData.append('image', imageInput.files[0]);
 
     try {
-        const response = await fetch('http://localhost:8080/api/images/generateCaption', {
+        const response = await fetch('http://localhost:8080/api/images/captions', {
             method: 'POST',
             body: formData
         });
