@@ -14,6 +14,11 @@ import org.springframework.util.MimeType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Map;
 
@@ -28,6 +33,8 @@ public class AutoCaptionImageResource {
 
     private final Map<String, MimeType> supportedTypes;
 
+    private static final Path IMAGES = Paths.get(System.getProperty("user.dir"), "images");
+
     @Autowired
     public AutoCaptionImageResource(OllamaChatModel ollamaChatModel) {
         this.chatClient = ChatClient.create(ollamaChatModel);
@@ -38,7 +45,7 @@ public class AutoCaptionImageResource {
     }
 
     @PostMapping(value = "/captions", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<List<String>> generateCaption(@RequestParam("image") MultipartFile imageFile) {
+    public ResponseEntity<List<String>> generateCaption(@RequestParam("image") MultipartFile imageFile) throws IOException {
         if (imageFile.isEmpty()) {
             throw new EmptyFileException("Uploaded file is empty");
         }
@@ -47,6 +54,13 @@ public class AutoCaptionImageResource {
         if (contentType.isEmpty() || !supportedTypes.containsKey(contentType)) {
             throw new UnsupportedMediaTypeException("Unsupported file type: " + contentType);
         }
+
+        if (!Files.exists(IMAGES)) { Files.createDirectories(IMAGES); }
+
+        String filename = Path.of(imageFile.getOriginalFilename()).getFileName().toString();
+        Path destinationFile = IMAGES.resolve(filename);
+        // Save the file
+        Files.copy(imageFile.getInputStream(), destinationFile, StandardCopyOption.REPLACE_EXISTING);
 
         UserMessage userMessage = UserMessage.builder()
                 .text("""
