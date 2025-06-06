@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-@Component
+@Component(value = "cacheKeyGenerator")
 public class CacheKeyGenerator implements KeyGenerator {
 
     @Override

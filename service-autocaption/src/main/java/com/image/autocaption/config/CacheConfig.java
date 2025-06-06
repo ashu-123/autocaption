@@ -19,6 +19,7 @@ public class CacheConfig {
                 Caffeine.newBuilder()
                         .maximumSize(100)
                         .expireAfterWrite(10, TimeUnit.MINUTES)
+                        .recordStats()
                         .build());
 
         SimpleCacheManager manager = new SimpleCacheManager();
