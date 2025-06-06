@@ -18,27 +18,46 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
+    public static final String ALLOWED_USERNAME = "ashu123";
+    public static final String ALLOWED_PASSWORD = "pass123";
+    public static final String USER = "USER";
+    public static final String NOT_ALLOWED_USER = "ashu456";
+    public static final String ADMIN = "ADMIN";
+    public static final String NOT_ALLOWED_PASSWORD = "pass456";
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth
-                        .anyRequest().authenticated()
-                ).httpBasic(Customizer.withDefaults());
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/**")
+                        .hasRole(USER)
+                        .anyRequest()
+                        .authenticated()
+                )
+                .httpBasic(Customizer.withDefaults());
 
         return httpSecurity.build();
     }
 
     @Bean
     public UserDetailsService users() {
-        UserDetails user = User.builder()
-                .username("ashu123")
-                .password(passwordEncoder().encode("pass123"))
+        UserDetails allowedUser = User.builder()
+                .username(ALLOWED_USERNAME)
+                .roles(USER)
+                .password(passwordEncoder().encode(ALLOWED_PASSWORD))
                 .build();
 
-        return new InMemoryUserDetailsManager(user);
+        UserDetails notAllowedUser = User.builder()
+                .username(NOT_ALLOWED_USER)
+                .roles(ADMIN)
+                .password(passwordEncoder().encode(NOT_ALLOWED_PASSWORD))
+                .build();
+
+        return new InMemoryUserDetailsManager(allowedUser, notAllowedUser);
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() { return new BCryptPasswordEncoder(); }
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 }
