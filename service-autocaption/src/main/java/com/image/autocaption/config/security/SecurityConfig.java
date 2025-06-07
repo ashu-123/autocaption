@@ -1,29 +1,44 @@
 package com.image.autocaption.config.security;
 
+import com.image.autocaption.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig {
 
-    public static final String ALLOWED_USERNAME = "ashu123";
-    public static final String ALLOWED_PASSWORD = "pass123";
     public static final String USER = "USER";
-    public static final String NOT_ALLOWED_USER = "ashu456";
-    public static final String ADMIN = "ADMIN";
-    public static final String NOT_ALLOWED_PASSWORD = "pass456";
+
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final UserDetailsService userDetailsService;
+    private final PasswordEncoder passwordEncoder;
+
+    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter,
+                          UserDetailsService userDetailsService,
+                          PasswordEncoder passwordEncoder) {
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+        this.userDetailsService = userDetailsService;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder);
+        return new ProviderManager(authProvider);
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -31,33 +46,14 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/api/**")
                         .hasRole(USER)
+                        .requestMatchers("/auth/**").permitAll()
                         .anyRequest()
                         .authenticated()
                 )
-                .httpBasic(Customizer.withDefaults());
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return httpSecurity.build();
     }
 
-    @Bean
-    public UserDetailsService users() {
-        UserDetails allowedUser = User.builder()
-                .username(ALLOWED_USERNAME)
-                .roles(USER)
-                .password(passwordEncoder().encode(ALLOWED_PASSWORD))
-                .build();
 
-        UserDetails notAllowedUser = User.builder()
-                .username(NOT_ALLOWED_USER)
-                .roles(ADMIN)
-                .password(passwordEncoder().encode(NOT_ALLOWED_PASSWORD))
-                .build();
-
-        return new InMemoryUserDetailsManager(allowedUser, notAllowedUser);
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 }
