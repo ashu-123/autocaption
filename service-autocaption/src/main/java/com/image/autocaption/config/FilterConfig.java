@@ -3,6 +3,7 @@ package com.image.autocaption.config;
 import com.image.autocaption.rateLimiting.CustomRateLimitingFilter;
 import com.image.autocaption.rateLimiting.RateLimitingFilter;
 import com.rateLimiter.FixedWindowRateLimiter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +11,12 @@ import redis.clients.jedis.Jedis;
 
 @Configuration
 public class FilterConfig {
+
+    @Value("${redis.host}")
+    private String host;
+
+    @Value("${redis.port}")
+    private int port;
 
     private final RateLimitingFilter rateLimitingFilter;
 
@@ -19,7 +26,7 @@ public class FilterConfig {
 
     @Bean
     public Jedis jedis() {
-        return new Jedis("localhost", 6379);
+        return new Jedis(host, port);
     }
 
     @Bean
