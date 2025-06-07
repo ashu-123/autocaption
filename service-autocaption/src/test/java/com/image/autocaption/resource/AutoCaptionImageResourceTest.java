@@ -39,7 +39,7 @@ class AutoCaptionImageResourceTest {
         );
 
         mockMvc.perform(MockMvcRequestBuilders.multipart("/api/images/captions")
-                        .file(imageFile))
+                        .file(imageFile).header("authorization", "Basic YXNodTEyMzpwYXNzMTIz"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.length()").value(3))
