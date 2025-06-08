@@ -1,5 +1,7 @@
 package com.image.autocaption.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.ai.chat.model.ChatResponse;
@@ -31,10 +33,18 @@ public class AutoCaptionImageService {
 
     private final KeyGenerator keyGenerator;
 
-    public AutoCaptionImageService(OllamaChatModel ollamaChatModel, CacheManager cacheManager, KeyGenerator keyGenerator) {
+    private final AwsS3Service awsS3Service;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AutoCaptionImageService.class);
+
+    public AutoCaptionImageService(OllamaChatModel ollamaChatModel,
+                                   CacheManager cacheManager,
+                                   KeyGenerator keyGenerator,
+                                   AwsS3Service awsS3Service) {
         this.chatClient = ChatClient.create(ollamaChatModel);
         this.cacheManager = cacheManager;
         this.keyGenerator = keyGenerator;
+        this.awsS3Service = awsS3Service;
     }
 
     @Cacheable(value = "imageCache", keyGenerator = "cacheKeyGenerator")
@@ -48,7 +58,8 @@ public class AutoCaptionImageService {
         Path destinationFile = IMAGES.resolve(filename);
         // Save the file
         Files.copy(imageFile.getInputStream(), destinationFile, StandardCopyOption.REPLACE_EXISTING);
-
+        awsS3Service.uploadFile(imageFile);
+        LOGGER.info("Image uploaded successfully to AWS S3!");
 
         UserMessage userMessage = UserMessage.builder()
                 .text("""
