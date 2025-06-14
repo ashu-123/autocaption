@@ -1,9 +1,12 @@
 package com.image.autocaption.config;
 
-import com.image.autocaption.rateLimiting.CustomRateLimitingFilter;
-import com.image.autocaption.rateLimiting.Bucket4jRateLimitingFilter;
+import com.image.autocaption.rateLimiting.*;
 import com.rateLimiter.FixedWindowRateLimiter;
+import com.rateLimiter.SlidingWindowRateLimiter;
+import com.rateLimiter.TokenBucketRateLimiter;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,13 +33,47 @@ public class FilterConfig {
     }
 
     @Bean
+    @ConditionalOnProperty(name = "api.rateLimiting.filter", havingValue = "fixedWindow", matchIfMissing = true)
     public FixedWindowRateLimiter fixedWindowRateLimiter() {
         return new FixedWindowRateLimiter(jedis(), 60, 10);
     }
 
     @Bean
-    public CustomRateLimitingFilter customRateLimitingFilter() {
-        return new CustomRateLimitingFilter(fixedWindowRateLimiter());
+    @ConditionalOnProperty(name = "api.rateLimiting.filter", havingValue = "slidingWindow")
+    public SlidingWindowRateLimiter slidingWindowRateLimiter() {
+        System.out.println("hereeee slidinggggggggg");
+        return new SlidingWindowRateLimiter(jedis(), 60, 20,10);
+    }
+
+    @Bean
+    @ConditionalOnProperty(name = "api.rateLimiting.filter", havingValue = "tokenBucket")
+    public TokenBucketRateLimiter tokenBucketRateLimiter() {
+        System.out.println("yahan");
+        return new TokenBucketRateLimiter(jedis(), 10, 5);
+    }
+
+    @Bean
+    @ConditionalOnBean(FixedWindowRateLimiter.class)
+    public FixedWindowApiRateLimiter fixedWindowApiRateLimiter(FixedWindowRateLimiter fixedWindowRateLimiter) {
+        System.out.println("DEfault chala");
+        return new FixedWindowApiRateLimiter(fixedWindowRateLimiter);
+    }
+
+    @Bean
+    @ConditionalOnBean(SlidingWindowRateLimiter.class)
+    public SlidingWindowApiRateLimiter slidingWindowApiRateLimiter(SlidingWindowRateLimiter slidingWindowRateLimiter) {
+        return new SlidingWindowApiRateLimiter(slidingWindowRateLimiter);
+    }
+
+    @Bean
+    @ConditionalOnBean(TokenBucketRateLimiter.class)
+    public TokenBucketApiRateLimiter tokenBucketApiRateLimiter(TokenBucketRateLimiter tokenBucketRateLimiter) {
+        return new TokenBucketApiRateLimiter(tokenBucketRateLimiter);
+    }
+
+    @Bean
+    public CustomRateLimitingFilter customRateLimitingFilter(ApiRateLimiter apiRateLimiter) {
+        return new CustomRateLimitingFilter(apiRateLimiter);
     }
 
 //    @Bean
@@ -48,9 +85,9 @@ public class FilterConfig {
 //    }
 
     @Bean
-    public FilterRegistrationBean<CustomRateLimitingFilter> registerRateLimitingFilter() {
+    public FilterRegistrationBean<CustomRateLimitingFilter> registerRateLimitingFilter(ApiRateLimiter apiRateLimiter) {
         FilterRegistrationBean<CustomRateLimitingFilter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setFilter(customRateLimitingFilter());
+        registrationBean.setFilter(customRateLimitingFilter(apiRateLimiter));
         registrationBean.addUrlPatterns("/api/*", "/auth/*");
         return registrationBean;
     }
