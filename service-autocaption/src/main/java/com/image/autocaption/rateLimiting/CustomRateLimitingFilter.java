@@ -13,12 +13,12 @@ import java.util.Map;
 
 public class CustomRateLimitingFilter implements Filter {
 
-    private final FixedWindowRateLimiter fixedWindowRateLimiter;
+    private final ApiRateLimiter apiRateLimiter;
 
     private final ObjectMapper objectMapper;
 
-    public CustomRateLimitingFilter(FixedWindowRateLimiter fixedWindowRateLimiter) {
-        this.fixedWindowRateLimiter = fixedWindowRateLimiter;
+    public CustomRateLimitingFilter(ApiRateLimiter apiRateLimiter) {
+        this.apiRateLimiter = apiRateLimiter;
         this.objectMapper = new ObjectMapper();
     }
 
@@ -31,7 +31,13 @@ public class CustomRateLimitingFilter implements Filter {
 
         String clientIp = req.getRemoteAddr();
         String clientId = "rate-limit: " + clientIp;
-        if (fixedWindowRateLimiter.isAllowed(clientId)) {
+
+        boolean isAllowed = switch (apiRateLimiter) {
+            case FixedWindowApiRateLimiter fixedWindowApiRateLimiter -> fixedWindowApiRateLimiter.getFixedWindowRateLimiter().isAllowed(clientId);
+            case SlidingWindowApiRateLimiter slidingWindowApiRateLimiter -> slidingWindowApiRateLimiter.getSlidingWindowRateLimiter().isAllowed(clientId);
+            case TokenBucketApiRateLimiter tokenBucketApiRateLimiter -> tokenBucketApiRateLimiter.getTokenBucketRateLimiter().isAllowed(clientId);
+        };
+        if (isAllowed) {
             chain.doFilter(request, response);
         } else {
             res.setStatus(HttpStatus.TOO_MANY_REQUESTS.value());
