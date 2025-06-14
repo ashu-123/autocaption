@@ -2,7 +2,7 @@ package com.image.autocaption.rateLimiting;
 
 import com.rateLimiter.FixedWindowRateLimiter;
 
-public final class FixedWindowApiRateLimiter implements ApiRateLimiter{
+public final class FixedWindowApiRateLimiter implements ApiRateLimiter {
 
     private final FixedWindowRateLimiter fixedWindowRateLimiter;
 

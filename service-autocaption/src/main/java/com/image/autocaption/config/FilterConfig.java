@@ -41,21 +41,18 @@ public class FilterConfig {
     @Bean
     @ConditionalOnProperty(name = "api.rateLimiting.filter", havingValue = "slidingWindow")
     public SlidingWindowRateLimiter slidingWindowRateLimiter() {
-        System.out.println("hereeee slidinggggggggg");
-        return new SlidingWindowRateLimiter(jedis(), 60, 20,10);
+        return new SlidingWindowRateLimiter(jedis(), 60, 20, 10);
     }
 
     @Bean
     @ConditionalOnProperty(name = "api.rateLimiting.filter", havingValue = "tokenBucket")
     public TokenBucketRateLimiter tokenBucketRateLimiter() {
-        System.out.println("yahan");
         return new TokenBucketRateLimiter(jedis(), 10, 5);
     }
 
     @Bean
     @ConditionalOnBean(FixedWindowRateLimiter.class)
     public FixedWindowApiRateLimiter fixedWindowApiRateLimiter(FixedWindowRateLimiter fixedWindowRateLimiter) {
-        System.out.println("DEfault chala");
         return new FixedWindowApiRateLimiter(fixedWindowRateLimiter);
     }
 

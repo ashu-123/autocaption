@@ -1,7 +1,6 @@
 package com.image.autocaption.rateLimiting;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rateLimiter.FixedWindowRateLimiter;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -33,9 +32,12 @@ public class CustomRateLimitingFilter implements Filter {
         String clientId = "rate-limit: " + clientIp;
 
         boolean isAllowed = switch (apiRateLimiter) {
-            case FixedWindowApiRateLimiter fixedWindowApiRateLimiter -> fixedWindowApiRateLimiter.getFixedWindowRateLimiter().isAllowed(clientId);
-            case SlidingWindowApiRateLimiter slidingWindowApiRateLimiter -> slidingWindowApiRateLimiter.getSlidingWindowRateLimiter().isAllowed(clientId);
-            case TokenBucketApiRateLimiter tokenBucketApiRateLimiter -> tokenBucketApiRateLimiter.getTokenBucketRateLimiter().isAllowed(clientId);
+            case FixedWindowApiRateLimiter fixedWindowApiRateLimiter ->
+                    fixedWindowApiRateLimiter.getFixedWindowRateLimiter().isAllowed(clientId);
+            case SlidingWindowApiRateLimiter slidingWindowApiRateLimiter ->
+                    slidingWindowApiRateLimiter.getSlidingWindowRateLimiter().isAllowed(clientId);
+            case TokenBucketApiRateLimiter tokenBucketApiRateLimiter ->
+                    tokenBucketApiRateLimiter.getTokenBucketRateLimiter().isAllowed(clientId);
         };
         if (isAllowed) {
             chain.doFilter(request, response);
