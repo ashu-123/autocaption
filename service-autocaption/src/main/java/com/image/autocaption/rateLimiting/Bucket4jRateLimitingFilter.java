@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
-public class RateLimitingFilter implements Filter {
+public class Bucket4jRateLimitingFilter implements Filter {
 
     private final Map<String, Bucket> buckets = new ConcurrentHashMap<>();
 
