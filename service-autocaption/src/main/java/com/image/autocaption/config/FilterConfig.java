@@ -1,7 +1,7 @@
 package com.image.autocaption.config;
 
 import com.image.autocaption.rateLimiting.CustomRateLimitingFilter;
-import com.image.autocaption.rateLimiting.RateLimitingFilter;
+import com.image.autocaption.rateLimiting.Bucket4jRateLimitingFilter;
 import com.rateLimiter.FixedWindowRateLimiter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -18,10 +18,10 @@ public class FilterConfig {
     @Value("${redis.port}")
     private int port;
 
-    private final RateLimitingFilter rateLimitingFilter;
+    private final Bucket4jRateLimitingFilter bucket4jRateLimitingFilter;
 
-    public FilterConfig(RateLimitingFilter rateLimitingFilter) {
-        this.rateLimitingFilter = rateLimitingFilter;
+    public FilterConfig(Bucket4jRateLimitingFilter bucket4jRateLimitingFilter) {
+        this.bucket4jRateLimitingFilter = bucket4jRateLimitingFilter;
     }
 
     @Bean
@@ -51,7 +51,7 @@ public class FilterConfig {
     public FilterRegistrationBean<CustomRateLimitingFilter> registerRateLimitingFilter() {
         FilterRegistrationBean<CustomRateLimitingFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(customRateLimitingFilter());
-        registrationBean.addUrlPatterns("/api/*");
+        registrationBean.addUrlPatterns("/api/*", "/auth/*");
         return registrationBean;
     }
 }
