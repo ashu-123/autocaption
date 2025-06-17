@@ -11,9 +11,9 @@ import java.util.*;
 @Component
 public class JwtUtil {
 
-    private final String SECRET_KEY = "your_secret_key";
+    public static final String SECRET_KEY = "your_secret_key";
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateAccessToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
         Collection<? extends GrantedAuthority> roles = userDetails.getAuthorities();
         claims.put("roles", roles.stream().map(GrantedAuthority::getAuthority).toList());
