@@ -8,6 +8,11 @@ public class AuthResponseDto {
 
     private String refreshToken;
 
+    public AuthResponseDto(String accessToken, String refreshToken) {
+        this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
+    }
+
     public String getAccessToken() {
         return accessToken;
     }
