@@ -1,0 +1,24 @@
+<div class="container">
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title text-center">Upload an Image for Captioning</h5>
+      <form (submit)="onSubmit($event)">
+        <div class="mb-3">
+          <input type="file" class="form-control" (change)="onFileSelected($event)" accept="image/*" required />
+        </div>
+        <button type="submit" class="btn btn-primary w-100" [disabled]="isLoading || !selectedFile">
+          {{ isLoading ? 'Uploading...' : 'Upload and Generate Captions' }}
+        </button>
+      </form>
+      <img *ngIf="previewUrl" [src]="previewUrl" alt="Image Preview" class="img-fluid mt-3" />
+      <div *ngIf="captions.length" class="list-group mt-3">
+        <div *ngFor="let caption of captions" class="list-group-item">
+          {{ caption }}
+        </div>
+      </div>
+      <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+        Error: {{ errorMessage }}
+      </div>
+    </div>
+  </div>
+</div>
