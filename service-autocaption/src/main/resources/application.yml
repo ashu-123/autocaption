@@ -4,16 +4,16 @@ spring:
       client:
         registration:
           google:
-            client-id: autocaption-client-1
+            client-id: 676495656186-l59epksbb4ag3c17fss4sbtgv79tkob1.apps.googleusercontent.com
             client-secret: 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
             scope:
               - email
               - profile
               - openid
+            redirect-uri: "http://localhost:8080/oauth2/callback/google"
         provider:
           google:
             authorization-uri: https://accounts.google.com/o/oauth2/v2/auth
             token-uri: https://oauth2.googleapis.com/token
             user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
-#            user-info-uri: https://openidconnect.googleapis.com/v1/userinfo
-#            user-name-attribute: sub
+            user-name-attribute: sub
