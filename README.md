@@ -96,8 +96,6 @@ curl -X POST http://localhost:8080/api/images/upload \
 
 - Caption Quality: Caption accuracy depends on the model’s capabilities. Some outputs might be vague or repetitive.
 
-- Basic UI: The frontend is kept simple for demonstration purposes; lacks validation and error animations.
-
 - Single Image: Currently supports uploading one image at a time.
 
 ---
@@ -110,8 +108,6 @@ curl -X POST http://localhost:8080/api/images/upload \
 - ✅ Downscale large images before processing
 
 - ✅ Switch between models (e.g., llava, llava-phi, bakllava) from UI or backend
-
-- ✅ Add caching for already-processed images
 
 - ✅ Add Docker support to make deployment easier
 
