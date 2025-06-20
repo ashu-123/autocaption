@@ -11,6 +11,11 @@ This is a full-stack application that allows users to upload an image via a web 
 - Display captions in a clean, responsive UI
 - Powered by `Ollama` running `gemma3:4b` multimodal locally
 - Backend built with **Spring Boot 3** and **Spring AI**
+- In-Memory caching available - Get quick responses for previously uploaded images
+- JWT Authentication secured REST End points
+- CORS handling to adhere to best security practices
+- Configurable API Rate Limiting available to choose from Fixed Window, Sliding Window & Token Bucket Rate Limiting Algorithms
+- Redis backed API rate limiting with configurable Redis connections to remote instances
 
 ---
 
@@ -18,6 +23,7 @@ This is a full-stack application that allows users to upload an image via a web 
 
 ### 1. Prerequisites
 
+- Angular 17+
 - Java 17+
 - Maven
 - [Ollama](https://ollama.com/) installed and running locally
@@ -52,18 +58,21 @@ Backend API is available at: http://localhost:8080/api/images/generateCaption
 
 ### 3. Frontend Setup
 
-The frontend is just a static HTML file which uses a script written in JavaScript to make API calls to the backend and fetch the generated captions as response.
 
-- Open index.html in your browser
-- Upload an image
-- Captions will be generated and shown
+```bash
+cd autocaption-ui
+npm install
+npm start
+```
+
+The UI should now be available at: http://localhost:4200
 
 ---
 
 ## 🧠 How It Works
 
 - User uploads an image via the web form.
-- Image is sent as multipart/form-data to the /api/images/generateCaptions endpoint.
+- Image is sent as multipart/form-data to the /api/images/captions endpoint.
 - Spring Boot prompts the Gemma:4b LLM model to generate captions for the image using the Ollama ChatClient.
 - The LLM generates 3 captions which are returned as a JSON array.
 - The frontend displays the captions neatly.
@@ -76,6 +85,7 @@ Use curl:
 ```bash
 curl -X POST http://localhost:8080/api/images/upload \
   -H "Content-Type: multipart/form-data" \
+  -H "Authorization: Bearer <access-token>" \
   -F "image=@/path/to/image.jpg"
 ```
 
