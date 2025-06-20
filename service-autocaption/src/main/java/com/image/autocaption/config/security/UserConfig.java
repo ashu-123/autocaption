@@ -20,17 +20,17 @@ public class UserConfig {
     public static final String NOT_ALLOWED_PASSWORD = "pass456";
 
     @Bean
-    public UserDetailsService users() {
+    public UserDetailsService users(PasswordEncoder passwordEncoder) {
         UserDetails allowedUser = User.builder()
                 .username(ALLOWED_USERNAME)
                 .roles(USER)
-                .password(passwordEncoder().encode(ALLOWED_PASSWORD))
+                .password(passwordEncoder.encode(ALLOWED_PASSWORD))
                 .build();
 
         UserDetails notAllowedUser = User.builder()
                 .username(NOT_ALLOWED_USER)
                 .roles(ADMIN)
-                .password(passwordEncoder().encode(NOT_ALLOWED_PASSWORD))
+                .password(passwordEncoder.encode(NOT_ALLOWED_PASSWORD))
                 .build();
 
         return new InMemoryUserDetailsManager(allowedUser, notAllowedUser);

@@ -15,7 +15,6 @@ import static com.image.autocaption.constant.ImageTypes.getSupportedContentTypes
 
 @RestController
 @RequestMapping("/api/images")
-@CrossOrigin
 public class AutoCaptionImageResource {
 
     private final AutoCaptionImageService autoCaptionImageService;

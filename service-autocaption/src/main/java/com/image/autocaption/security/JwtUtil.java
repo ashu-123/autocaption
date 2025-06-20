@@ -11,18 +11,31 @@ import java.util.*;
 @Component
 public class JwtUtil {
 
-    private final String SECRET_KEY = "your_secret_key";
+    public static final String SECRET_KEY = "your_secret_key";
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateAccessToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
         Collection<? extends GrantedAuthority> roles = userDetails.getAuthorities();
         claims.put("roles", roles.stream().map(GrantedAuthority::getAuthority).toList());
+
+        long accessTokenExpirationMs = 60 * 60 * 1000;
 
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) // 1 hour
+                .setExpiration(new Date(System.currentTimeMillis() + accessTokenExpirationMs)) // 1 hour
+                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+                .compact();
+    }
+
+    public String generateRefreshToken(UserDetails userDetails) {
+        long refreshTokenExpirationMs = 7 * 24 * 60 * 60 * 1000;
+
+        return Jwts.builder()
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + refreshTokenExpirationMs)) // 7 days
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
                 .compact();
     }
