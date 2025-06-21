@@ -41,7 +41,7 @@ public class UserConfig {
                 .password(passwordEncoder.encode(ALLOWED_PASSWORD))
                 .build();
 
-        return new InMemoryUserDetailsManager(allowedUser, notAllowedUser);
+        return new InMemoryUserDetailsManager(allowedUser, notAllowedUser, googleAllowedUser);
     }
 
     @Bean
