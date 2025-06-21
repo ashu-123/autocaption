@@ -1,12 +1,11 @@
 package com.image.autocaption.config.security;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ConfigurationProperties(prefix = "google")
-public class Outh2Config {
+public class Oauth2Config {
 
     private String clientId;
 
