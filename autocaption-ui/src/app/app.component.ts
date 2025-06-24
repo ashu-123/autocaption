@@ -14,6 +14,7 @@ import { AuthService } from './service/auth.service';
 })
 export class AppComponent {
 
+  isDragging = false;
   selectedFile: File | null = null;
   previewUrl: string | ArrayBuffer | null = null;
   captions: string[] = [];
@@ -30,13 +31,7 @@ export class AppComponent {
       return;
     }
 
-    this.selectedFile = input.files[0];
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.previewUrl = reader.result;
-    };
-    reader.readAsDataURL(this.selectedFile);
+    this.handleFile(input.files[0]);
   }
 
   onSubmit(event: Event): void {
@@ -71,6 +66,36 @@ export class AppComponent {
         this.isLoading = false;
       }
     });
+  }
+
+  onDragOver(event: DragEvent) {
+    event.preventDefault();
+    this.isDragging = true;
+  }
+
+  onDragLeave(event: DragEvent) {
+    event.preventDefault();
+    this.isDragging = false;
+  }
+
+  onDrop(event: DragEvent) {
+    event.preventDefault();
+    this.isDragging = false;
+    if (event.dataTransfer?.files.length) {
+      const file = event.dataTransfer.files[0];
+      this.handleFile(file);
+    }
+  }
+
+  handleFile(file: File) {
+    this.selectedFile = file;
+
+    // Preview
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.previewUrl = reader.result as string;
+    };
+    reader.readAsDataURL(file);
   }
 
 }
