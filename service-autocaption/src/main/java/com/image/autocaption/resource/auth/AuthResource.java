@@ -21,6 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static com.image.autocaption.security.JwtUtil.SECRET_KEY;
 
+/**
+ * The resource that exposes end points for generating JWT tokens for user authorization.
+ */
 @RestController
 @RequestMapping("/auth")
 public class AuthResource {
@@ -37,6 +40,12 @@ public class AuthResource {
         this.userDetailsService = userDetailsService;
     }
 
+    /**
+     * The endpoint that returns a pair of access token & refresh token, in exchange for registered client credentials
+     *
+     * @param request dto containing username and password credentials for user authentication
+     * @return a pair of access token & refresh token, once the user gets authenticated successfully
+     */
     @PostMapping("/login")
     public ResponseEntity<AuthResponseDto> authenticate(@RequestBody AuthRequestDto request) {
         try {
@@ -53,6 +62,13 @@ public class AuthResource {
         return ResponseEntity.ok(new AuthResponseDto(accessToken, refreshToken));
     }
 
+    /**
+     * The endpoint that refreshes an expired access token after successful validation of a refresh token.
+     * New refresh token is generated as well to support token rotation
+     *
+     * @param request the refresh token which once verified can generate a new access token
+     * @return pair of fresh generated access token & refresh token, as long as the input refresh token stands valid.
+     */
     @PostMapping("/refresh")
     public ResponseEntity<AuthResponseDto> refresh(@RequestBody TokenRefreshRequestDto request) {
         String refreshToken = request.getRefreshToken();

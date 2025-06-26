@@ -2,6 +2,9 @@ package com.image.autocaption.model;
 
 import java.util.Objects;
 
+/**
+ * The API representation of a response to the authentication request for generating JWT tokens.
+ */
 public class AuthResponseDto {
 
     private String accessToken;

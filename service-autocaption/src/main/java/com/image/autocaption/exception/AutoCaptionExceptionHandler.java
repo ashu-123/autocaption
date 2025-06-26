@@ -6,6 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+/**
+ * A Global Exception Handler to return a structured error response in case of various runtime exceptions.
+ */
 @RestControllerAdvice
 public class AutoCaptionExceptionHandler {
 

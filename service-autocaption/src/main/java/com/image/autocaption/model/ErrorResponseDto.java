@@ -1,5 +1,8 @@
 package com.image.autocaption.model;
 
+/**
+ * The API representation of a structured error response in case of runtime exceptions occurring
+ */
 public class ErrorResponseDto {
 
     private String error;

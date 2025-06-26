@@ -2,13 +2,15 @@ package com.image.autocaption.service;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * The class that is responsible for storing image files in the S3 bucket on AWS.
+ */
 @Service
 public class AwsS3Service {
 
@@ -20,6 +22,13 @@ public class AwsS3Service {
         this.amazonS3 = amazonS3;
     }
 
+    /**
+     * The method that uploads input image file to AWS S3 bucket.
+     *
+     * @param file the filte to be stored
+     * @return the URL of the stored file in the bucket
+     * @throws IOException
+     */
     public String uploadFile(MultipartFile file) throws IOException {
         String fileName = file.getOriginalFilename();
         InputStream inputStream = file.getInputStream();

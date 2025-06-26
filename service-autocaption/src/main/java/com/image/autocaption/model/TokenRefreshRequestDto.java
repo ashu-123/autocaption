@@ -2,6 +2,9 @@ package com.image.autocaption.model;
 
 import java.util.Objects;
 
+/**
+ * The API representation of a token refresh request to generate fresh access JWT tokens.
+ */
 public class TokenRefreshRequestDto {
 
     private String refreshToken;

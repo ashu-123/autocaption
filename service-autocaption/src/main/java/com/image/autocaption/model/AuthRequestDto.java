@@ -1,5 +1,8 @@
 package com.image.autocaption.model;
 
+/**
+ * The API representation of an authentication request to generate a JWT token.
+ */
 public class AuthRequestDto {
 
     private String username;

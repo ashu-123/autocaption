@@ -12,6 +12,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import redis.clients.jedis.Jedis;
 
+/**
+ * The class which defines bean definition of various API rate limiters
+ */
 @Configuration
 public class FilterConfig {
 
