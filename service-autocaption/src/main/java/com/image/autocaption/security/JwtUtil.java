@@ -8,6 +8,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.*;
 
+/**
+ * A utility class that is responsible for the generation of JWT tokens(access & refresh) & checking validity of input tokens.
+ */
 @Component
 public class JwtUtil {
 

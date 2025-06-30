@@ -19,6 +19,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
+/**
+ * Configuration class to configure the security filter chain
+ */
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig {
@@ -62,6 +65,10 @@ public class SecurityConfig {
         return httpSecurity.build();
     }
 
+    /**
+     * The bean which adds CORS configurations
+     * @return the configured WebMvcConfigurer bean
+     */
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {

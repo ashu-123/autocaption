@@ -6,6 +6,10 @@ import org.springframework.stereotype.Component;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
+
+/**
+ * The utility which creates bytes image array as the caching key.
+ */
 @Component(value = "cacheKeyGenerator")
 public class CacheKeyGenerator implements KeyGenerator {
 

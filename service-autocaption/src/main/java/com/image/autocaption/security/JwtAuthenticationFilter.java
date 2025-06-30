@@ -14,6 +14,10 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+/**
+ * The Filter which is plugged into the Security Filter Chain for validating the access token provided in the authorization
+ * header of the request.
+ */
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 

@@ -6,6 +6,9 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Configuration class for AWS & S3 credentials.
+ */
 @Configuration
 public class AwsS3Config {
 

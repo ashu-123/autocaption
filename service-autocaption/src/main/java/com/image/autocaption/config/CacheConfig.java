@@ -10,6 +10,9 @@ import org.springframework.context.annotation.Configuration;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * The class which defines cache configuration like cache invalidation/expiration timings, max cache size, etc
+ */
 @Configuration
 public class CacheConfig {
 
