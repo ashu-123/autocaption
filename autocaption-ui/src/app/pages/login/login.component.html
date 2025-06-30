@@ -1,0 +1,32 @@
+<div class="login-container">
+  <div class="login-box">
+    <h2>Login</h2>
+
+    <!-- Traditional Login Form -->
+    <form (ngSubmit)="loginWithCredentials()" #loginForm="ngForm">
+      <input
+        type="text"
+        name="username"
+        [(ngModel)]="username"
+        required
+        placeholder="Username"
+      />
+      <input
+        type="password"
+        name="password"
+        [(ngModel)]="password"
+        required
+        placeholder="Password"
+      />
+      <button type="submit" [disabled]="loginForm.invalid">Login</button>
+    </form>
+
+    <hr />
+
+    <!-- Google Login Button -->
+    <button class="google-login" (click)="loginWithGoogle()">
+      <img src="assets/google-icon.svg" alt="Google icon" />
+      Continue with Google
+    </button>
+  </div>
+</div>
