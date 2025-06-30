@@ -15,12 +15,14 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 @Configuration
 public class UserConfig {
 
-    public static final String ALLOWED_USERNAME = "ashu123";
-    public static final String ALLOWED_PASSWORD = "pass123";
-    public static final String USER = "USER";
-    public static final String NOT_ALLOWED_USER = "ashu456";
-    public static final String ADMIN = "ADMIN";
-    public static final String NOT_ALLOWED_PASSWORD = "pass456";
+    private static final String ALLOWED_USERNAME = "ashu123";
+    private static final String ALLOWED_PASSWORD = "pass123";
+    private static final String USER = "USER";
+    private static final String NOT_ALLOWED_USER = "ashu456";
+    private static final String ADMIN = "ADMIN";
+    private static final String NOT_ALLOWED_PASSWORD = "pass456";
+
+    private static final String GOOGLE_ALLOWED_USER = "ashutoshmishra464@gmail.com";
 
     @Bean
     public UserDetailsService users(PasswordEncoder passwordEncoder) {
@@ -36,7 +38,13 @@ public class UserConfig {
                 .password(passwordEncoder.encode(NOT_ALLOWED_PASSWORD))
                 .build();
 
-        return new InMemoryUserDetailsManager(allowedUser, notAllowedUser);
+        UserDetails googleAllowedUser = User.builder()
+                .username(GOOGLE_ALLOWED_USER)
+                .roles(USER)
+                .password(passwordEncoder.encode(ALLOWED_PASSWORD))
+                .build();
+
+        return new InMemoryUserDetailsManager(allowedUser, notAllowedUser, googleAllowedUser);
     }
 
     @Bean
