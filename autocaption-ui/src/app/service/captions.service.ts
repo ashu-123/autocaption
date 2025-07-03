@@ -11,11 +11,16 @@ const BASIC_URL = "http://localhost:8080";
 export class CaptionsService {
 
   private captionsUrl: string = '/api/images/captions';
-  constructor(private http : HttpClient, private authService : AuthService) { }
+  constructor(private http: HttpClient, private authService: AuthService) { }
 
   getCaptions(formData: FormData) {
 
-    const accessToken = this.authService.getAccessToken();
+    var accessToken: string | null;
+    const provider = localStorage.getItem('provider');
+    
+    if (provider === 'oauth2')
+      accessToken = localStorage.getItem('access_token');
+    else accessToken = this.authService.getAccessToken();
 
     if (!accessToken) {
       return throwError(() => new Error('No access token available'));
@@ -24,7 +29,7 @@ export class CaptionsService {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${accessToken}`,
     });
-    
-    return this.http.post<string[]>(BASIC_URL+this.captionsUrl, formData, { headers : headers });
+
+    return this.http.post<string[]>(BASIC_URL + this.captionsUrl, formData, { headers: headers });
   }
 }

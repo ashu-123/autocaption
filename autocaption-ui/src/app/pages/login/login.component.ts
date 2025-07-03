@@ -32,8 +32,9 @@ export class LoginComponent implements OnInit {
   }
 
   loginWithCredentials() {
+    localStorage.setItem('provider', 'credentials');
     this.http
-      .post(`${this.backendBaseUrl}/api/auth/login`, {
+      .post(`${this.backendBaseUrl}/auth/login`, {
         username: this.username,
         password: this.password,
       })
@@ -48,6 +49,7 @@ export class LoginComponent implements OnInit {
   }
 
   loginWithGoogle() {
+    localStorage.setItem('provider', 'oauth2');
     const redirectUri = encodeURIComponent(
       window.location.origin + '/oauth2/callback/google' // must match what's in Google console
     );
