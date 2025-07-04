@@ -1,4 +1,4 @@
-package com.image.autocaption.model;
+package com.image.autocaption.model.dto;
 
 import java.util.Objects;
 

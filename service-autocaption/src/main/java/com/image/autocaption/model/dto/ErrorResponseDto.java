@@ -1,4 +1,4 @@
-package com.image.autocaption.model;
+package com.image.autocaption.model.dto;
 
 /**
  * The API representation of a structured error response in case of runtime exceptions occurring

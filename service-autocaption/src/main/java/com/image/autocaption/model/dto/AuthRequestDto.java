@@ -1,4 +1,4 @@
-package com.image.autocaption.model;
+package com.image.autocaption.model.dto;
 
 /**
  * The API representation of an authentication request to generate a JWT token.

@@ -1,8 +1,8 @@
 package com.image.autocaption.resource.auth;
 
-import com.image.autocaption.model.AuthRequestDto;
-import com.image.autocaption.model.AuthResponseDto;
-import com.image.autocaption.model.TokenRefreshRequestDto;
+import com.image.autocaption.model.dto.AuthRequestDto;
+import com.image.autocaption.model.dto.AuthResponseDto;
+import com.image.autocaption.model.dto.TokenRefreshRequestDto;
 import com.image.autocaption.security.JwtUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
