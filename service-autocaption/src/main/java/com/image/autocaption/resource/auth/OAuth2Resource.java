@@ -5,7 +5,7 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.image.autocaption.config.security.Oauth2Config;
-import com.image.autocaption.model.AuthResponseDto;
+import com.image.autocaption.model.dto.AuthResponseDto;
 import com.image.autocaption.security.JwtUtil;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;

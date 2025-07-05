@@ -1,6 +1,6 @@
 package com.image.autocaption.exception;
 
-import com.image.autocaption.model.ErrorResponseDto;
+import com.image.autocaption.model.dto.ErrorResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
