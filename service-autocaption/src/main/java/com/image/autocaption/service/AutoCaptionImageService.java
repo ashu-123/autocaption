@@ -1,5 +1,7 @@
 package com.image.autocaption.service;
 
+import com.image.autocaption.model.entity.ImageHistory;
+import com.image.autocaption.repository.ImageHistoryRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.client.ChatClient;
@@ -18,7 +20,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.UUID;
 
 import static com.image.autocaption.constant.ImageTypes.getSupportedContentTypes;
 
@@ -41,14 +46,18 @@ public class AutoCaptionImageService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AutoCaptionImageService.class);
 
+    private final ImageHistoryService imageHistoryService;
+
     public AutoCaptionImageService(OllamaChatModel ollamaChatModel,
                                    CacheManager cacheManager,
                                    KeyGenerator keyGenerator,
-                                   AwsS3Service awsS3Service) {
+                                   AwsS3Service awsS3Service,
+                                   ImageHistoryService imageHistoryService) {
         this.chatClient = ChatClient.create(ollamaChatModel);
         this.cacheManager = cacheManager;
         this.keyGenerator = keyGenerator;
         this.awsS3Service = awsS3Service;
+        this.imageHistoryService = imageHistoryService;
     }
 
     /**
@@ -71,7 +80,7 @@ public class AutoCaptionImageService {
         Path destinationFile = IMAGES.resolve(filename);
         // Save the file
         Files.copy(imageFile.getInputStream(), destinationFile, StandardCopyOption.REPLACE_EXISTING);
-        awsS3Service.uploadFile(imageFile);
+        String imgURL = awsS3Service.uploadFile(imageFile);
         LOGGER.info("Image uploaded successfully to AWS S3!");
 
         UserMessage userMessage = UserMessage.builder()
@@ -88,7 +97,12 @@ public class AutoCaptionImageService {
                 .call()
                 .chatResponse();
 
-        return List.of(response.getResult().getOutput().getText().split("\n"));
+        List<String> captions = List.of(response.getResult().getOutput().getText().split("\n"));
+        ImageHistory imageHistory = imageHistoryService.createImageHistory(imgURL, captions);
+
+        return captions;
     }
+
+
 
 }
