@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.ai.chat.model.ChatResponse;
+import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.ai.content.Media;
 import org.springframework.ai.ollama.OllamaChatModel;
 import org.springframework.cache.CacheManager;
@@ -38,10 +39,6 @@ public class AutoCaptionImageService {
 
     private static final Path IMAGES = Paths.get(System.getProperty("user.dir"), "images");
 
-    private final CacheManager cacheManager;
-
-    private final KeyGenerator keyGenerator;
-
     private final AwsS3Service awsS3Service;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AutoCaptionImageService.class);
@@ -54,8 +51,6 @@ public class AutoCaptionImageService {
                                    AwsS3Service awsS3Service,
                                    ImageHistoryService imageHistoryService) {
         this.chatClient = ChatClient.create(ollamaChatModel);
-        this.cacheManager = cacheManager;
-        this.keyGenerator = keyGenerator;
         this.awsS3Service = awsS3Service;
         this.imageHistoryService = imageHistoryService;
     }
@@ -70,7 +65,7 @@ public class AutoCaptionImageService {
      * @throws IOException
      */
     @Cacheable(value = "imageCache", keyGenerator = "cacheKeyGenerator")
-    public List<String> createCaptions(byte[] image, MultipartFile imageFile) throws IOException {
+    public List<String> createCaptions(byte[] image, MultipartFile imageFile, String model) throws IOException {
 
         if (!Files.exists(IMAGES)) {
             Files.createDirectories(IMAGES);
@@ -94,6 +89,7 @@ public class AutoCaptionImageService {
         ChatResponse response = chatClient
                 .prompt()
                 .messages(userMessage)
+                .options(ChatOptions.builder().model(model).build())
                 .call()
                 .chatResponse();
 

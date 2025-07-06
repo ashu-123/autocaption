@@ -4,21 +4,28 @@ import { RouterOutlet } from '@angular/router';
 import { CaptionsService } from '../../service/captions.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from '../../service/auth.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-captions-generator',
   standalone: true,
-  imports: [CommonModule, RouterOutlet],
+  imports: [CommonModule, RouterOutlet, FormsModule],
   templateUrl: './captions-generator.component.html',
   styleUrl: './captions-generator.component.scss'
 })
 export class CaptionsGeneratorComponent {
   isDragging = false;
   selectedFile: File | null = null;
+  selectedModel: string = '';
   previewUrl: string | ArrayBuffer | null = null;
   captions: string[] = [];
   errorMessage: string | null = null;
   isLoading = false;
+
+  modelOptions = [
+    { value: 'gemma3:4b', label: 'Gemma3' },
+    { value: 'granite3.2-vision:2b', label: 'Granite3.2-Vision' },
+  ];
 
   constructor(private captionsService: CaptionsService, private authService: AuthService) { }
 
@@ -44,6 +51,7 @@ export class CaptionsGeneratorComponent {
 
     const formData = new FormData();
     formData.append('image', this.selectedFile);
+    formData.append('model', this.selectedModel);
 
     this.authService.getTokens({ username: 'ashu123', password: 'pass123' }).subscribe({
       next: () => {

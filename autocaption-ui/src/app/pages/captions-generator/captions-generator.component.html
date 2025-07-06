@@ -4,29 +4,29 @@
       <h5 class="card-title text-center">Upload an Image for Captioning</h5>
 
       <!-- ✅ DRAG & DROP ZONE -->
-      <div 
-        class="drop-zone mb-3" 
-        (dragover)="onDragOver($event)" 
-        (drop)="onDrop($event)"
-        (dragleave)="onDragLeave($event)"
-        [class.dragging]="isDragging"
-      >
+      <div class="drop-zone mb-3" (dragover)="onDragOver($event)" (drop)="onDrop($event)"
+        (dragleave)="onDragLeave($event)" [class.dragging]="isDragging">
         <p *ngIf="!selectedFile">Drag & drop an image here, or click to browse</p>
         <p *ngIf="selectedFile">{{ selectedFile.name }}</p>
-        <input 
-          type="file" 
-          class="form-control" 
-          (change)="onFileSelected($event)" 
-          accept="image/*" 
-          required 
-          hidden 
-          #fileInput
-        />
+        <input type="file" class="form-control" (change)="onFileSelected($event)" accept="image/*" required hidden
+          #fileInput />
         <button type="button" class="btn btn-outline-secondary btn-sm mt-2" (click)="fileInput.click()">Browse</button>
       </div>
 
       <!-- FORM SUBMIT -->
       <form (submit)="onSubmit($event)">
+
+        <!-- ✅ Model Selection Dropdown -->
+      <div class="mb-3">
+        <label for="modelSelect" class="form-label">Select a Model</label>
+        <select id="modelSelect" class="form-select" [(ngModel)]="selectedModel" name="model" required>
+          <option value="" disabled selected>Select a model</option>
+          <option *ngFor="let model of modelOptions" [value]="model.value">
+            {{ model.label }}
+          </option>
+        </select>
+      </div>
+      
         <button type="submit" class="btn btn-primary w-100" [disabled]="isLoading || !selectedFile">
           {{ isLoading ? 'Uploading...' : 'Upload and Generate Captions' }}
         </button>
