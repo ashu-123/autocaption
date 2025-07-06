@@ -35,7 +35,8 @@ public class AutoCaptionImageResource {
      * @throws IOException
      */
     @PostMapping(value = "/captions", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<List<String>> createCaptions(@RequestParam("image") MultipartFile[] imageFiles) throws IOException {
+    public ResponseEntity<List<String>> createCaptions(@RequestParam("image") MultipartFile[] imageFiles,
+                                                       @RequestParam("model") String model) throws IOException {
         if (imageFiles[0].isEmpty()) {
             throw new EmptyFileException("Uploaded file is empty");
         }
@@ -45,7 +46,7 @@ public class AutoCaptionImageResource {
             throw new UnsupportedMediaTypeException("Unsupported file type: " + contentType);
         }
 
-        var captions = autoCaptionImageService.createCaptions(imageFiles[0].getBytes(), imageFiles[0]);
+        var captions = autoCaptionImageService.createCaptions(imageFiles[0].getBytes(), imageFiles[0], model);
 
         return ResponseEntity.ok(captions);
     }
