@@ -50,7 +50,6 @@ public class OAuth2Resource {
     @GetMapping("/google")
     public ResponseEntity<AuthResponseDto> googleOauth2Callback(@RequestParam("code") String authorizationCode) {
 
-        System.out.println("Hellloooo");
         try {
             // 1. Exchange authorization code for tokens
             Map<String, Object> tokenResponse = exchangeCodeForTokens(authorizationCode);
