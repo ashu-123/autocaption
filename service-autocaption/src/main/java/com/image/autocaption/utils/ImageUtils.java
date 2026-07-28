@@ -38,23 +38,23 @@ public class ImageUtils {
                     .asBufferedImage();
 
             System.out.println("resized image size---" + resizedImage.getWidth() + " " + resizedImage.getHeight());
+            System.out.println(resizedImage.getType());
         }
 
-        return bufferedImageToResource(resizedImage, "jpg");
+        return bufferedImageToResource(resizedImage);
     }
 
     /**
      * Converts a Buffered Image to a ByteArrayResource
      *
      * @param image the resized buffered image to be converted
-     * @param format a String containing the informal name of the image format
      *
      * @return resource descriptor for the downscaled image
      * @throws Exception Exception occurred while processing the input image
      */
-    private static Resource bufferedImageToResource(BufferedImage image, String format) throws Exception {
+    private static Resource bufferedImageToResource(BufferedImage image) throws Exception {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ImageIO.write(image, format, baos); // format: "jpg", "png", etc.
+        ImageIO.write(image, "png", baos); // TODO format: "jpg", "png", etc.
         baos.flush();
         return new ByteArrayResource(baos.toByteArray());
     }
