@@ -1,8 +1,10 @@
 package com.image.autocaption.exception;
 
-public class UnsupportedMediaTypeException extends RuntimeException {
+import com.image.autocaption.constant.ErrorCode;
+
+public class UnsupportedMediaTypeException extends ApplicationException {
 
     public UnsupportedMediaTypeException(String message) {
-        super(message);
+        super(ErrorCode.UNSUPPORTED_MEDIA_TYPE, message);
     }
 }
