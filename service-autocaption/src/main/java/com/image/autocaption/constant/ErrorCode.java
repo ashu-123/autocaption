@@ -1,0 +1,50 @@
+package com.image.autocaption.constant;
+
+public enum ErrorCode {
+
+    // Generic
+    INTERNAL_SERVER_ERROR,
+    INVALID_REQUEST,
+    VALIDATION_ERROR,
+    RESOURCE_NOT_FOUND,
+    METHOD_NOT_ALLOWED,
+    UNSUPPORTED_MEDIA_TYPE,
+
+    // Authentication / Authorization
+    UNAUTHORIZED,
+    FORBIDDEN,
+    INVALID_TOKEN,
+    TOKEN_EXPIRED,
+
+    // Image
+    IMAGE_REQUIRED,
+    INVALID_IMAGE,
+    IMAGE_TOO_LARGE,
+    UNSUPPORTED_IMAGE_FORMAT,
+    IMAGE_PROCESSING_FAILED,
+    IMAGE_MODERATION_FAILED,
+    INAPPROPRIATE_IMAGE,
+
+    // Caption generation
+    CAPTION_GENERATION_FAILED,
+    LLM_SERVICE_UNAVAILABLE,
+    LLM_REQUEST_TIMEOUT,
+    LLM_RATE_LIMITED,
+
+    // Storage
+    STORAGE_ERROR,
+    FILE_UPLOAD_FAILED,
+    FILE_NOT_FOUND,
+
+    // Rate limiting
+    RATE_LIMIT_EXCEEDED,
+
+    // Async jobs
+    JOB_NOT_FOUND,
+    JOB_ALREADY_COMPLETED,
+    JOB_PROCESSING_FAILED,
+
+    // External services
+    EXTERNAL_SERVICE_ERROR,
+    EXTERNAL_SERVICE_TIMEOUT
+}
